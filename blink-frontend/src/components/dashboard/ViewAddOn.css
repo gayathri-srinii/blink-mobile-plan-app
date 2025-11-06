@@ -1,0 +1,77 @@
+/* Full page wrapper */
+.viewaddon-wrapper {
+  padding-top: 10px; /* below navbar */
+  background: #f8faff;
+  min-height: 100vh;
+  width: 97vw;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Full-width layout */
+.viewaddon-wrapper .container {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.viewaddon-wrapper .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.viewaddon-wrapper .col-md-4 {
+  padding: 0 15px;
+}
+
+.elegant-heading {
+  color: #1a1a1a;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+/* Card design */
+.addon-card {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9fc 100%);
+  transition: all 0.35s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;}
+
+.addon-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.addon-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #0078ff, #00b4d8);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+/* Add to Cart button */
+.addon-btn {
+  width: 100%;
+  padding: 10px 0;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #28a745, #4caf50);
+  border: none;
+  border-radius: 0 0 15px 15px;
+  transition: all 0.3s ease;
+}
+
+.addon-btn:hover {
+  background: linear-gradient(135deg, #218838, #388e3c);
+  color: #fff;
+  transform: scale(1.02);
+}

@@ -1,0 +1,70 @@
+.customise-wrapper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 100vh;
+  width: 97vw;
+  background: linear-gradient(to bottom right, #f8f9fc, #eaf0f9);
+  overflow-x: hidden;
+}
+
+.elegant-heading {
+  color: #1a1a2e;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.plan-select-card {
+  cursor: pointer;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.plan-select-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.customise-card {
+  max-width: 700px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.customise-card p {
+  font-size: 0.95rem;
+}
+
+.addon-option {
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+}
+
+.addon-option:hover {
+  background-color: #f0f4ff;
+}
+
+.active-addon {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.elegant-btn {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 0;
+  transition: all 0.3s ease;
+}
+
+.elegant-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.03);
+}

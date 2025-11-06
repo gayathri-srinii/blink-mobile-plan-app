@@ -1,0 +1,71 @@
+/* Navbar general styling */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(206, 228, 244);
+  padding: 10px 40px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.navbar-collapse {
+  flex-grow: 0 !important; /* stops navbar from stretching */
+}
+
+.menu-btn {
+  background-color: rgb(206, 228, 244);/* Blink Blue */
+  border: none;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.menu-btn:hover {
+  background-color: rgb(185, 218, 243); /* darker blue on hover */
+}
+
+.dropdown-menu-end {
+  right: 0 !important;
+  left: auto !important;
+  transform: translateX(25px); /* slightly pull left to fit fully */
+}
+
+
+
+
+/* Active link styling */
+.nav-link {
+  font-weight: 500;
+  color: #555 !important;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #0078ff !important;
+}
+
+/* Highlight active link */
+.active-link {
+  color: #0078ff !important;
+  font-weight: 600;
+}
+
+/* Brand hover animation */
+.navbar-brand:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Mobile menu background */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+}

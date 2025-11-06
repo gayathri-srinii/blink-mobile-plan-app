@@ -1,0 +1,98 @@
+/* Force full width layout */
+.viewplan-wrapper {
+  padding-top: 10px; /* keeps it below navbar */
+  background: #f8faff;
+  min-height: 100vh;
+  width: 97vw;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Override Bootstrap container limits */
+.viewplan-wrapper .container {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Row spacing fix */
+.viewplan-wrapper .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Optional: a touch of horizontal breathing room for the cards */
+.viewplan-wrapper .col-md-4 {
+  padding: 0 15px;
+}
+
+
+/* Heading styling */
+.elegant-heading {
+  color: #1a1a1a;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Card styling */
+.plan-card {
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9fc 100%);
+  transition: all 0.35s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #0078ff, #00b4d8);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 118, 255, 0.15);
+}
+
+/* Text styling inside the cards */
+.card-title {
+  font-size: 1.3rem;
+  color: #212529;
+  margin-bottom: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+.card-body ul li {
+  font-size: 15px;
+  color: #444;
+  padding: 4px 0;
+}
+
+/* Add to Cart button */
+.elegant-btn {
+  background: linear-gradient(135deg, #0078ff, #00b4d8);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 0 0 18px 18px;
+  padding: 12px 0;
+  transition: all 0.3s ease;
+}
+
+.elegant-btn:hover {
+  background: linear-gradient(135deg, #0062cc, #0096c7);
+  box-shadow: 0 5px 15px rgba(0, 118, 255, 0.25);
+  transform: translateY(-2px);
+}
+
