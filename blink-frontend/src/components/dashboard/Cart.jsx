@@ -1,7 +1,8 @@
 // components/dashboard/Cart.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  getCart,
+  fetchCartFromServer,
   removeBasePlan,
   removeAddon,
   clearCart,
@@ -9,21 +10,79 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Cart() {
-  const [cart, setCart] = useState(getCart());
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const load = async () => {
+    setLoading(true);
+    const items = await fetchCartFromServer();
+    setCart(items || []);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    setCart(getCart());
+    load();
   }, []);
 
-  const total =
-    (cart.basePlan ? cart.basePlan.price : 0) +
-    cart.addons.reduce((sum, a) => sum + a.price, 0);
+  // 🧮 Total price calculation
+  const total = cart.reduce((sum, item) => {
+    if (item.basePlan) return sum + Number(item.basePlan.price || 0);
+    if (item.addOn) return sum + Number(item.addOn.price || 0);
+    return sum;
+  }, 0);
+
+  // 🗑️ Remove a specific item
+  const handleRemoveRow = async (cartItem) => {
+    try {
+      if (cartItem.basePlan) {
+        await removeBasePlan(cartItem.basePlan.id);
+      } else if (cartItem.addOn) {
+        await removeAddon(cartItem.addOn.id);
+      }
+      await load();
+    } catch (err) {
+      console.error("❌ Failed to remove item:", err);
+    }
+  };
+
+  // 🧹 Clear all items from cart
+  const handleClear = async () => {
+    try {
+      await clearCart();
+      setCart([]);
+    } catch (err) {
+      console.error("❌ Failed to clear cart:", err);
+    }
+  };
+
+  // 💳 Proceed to checkout
+  const handleCheckout = () => {
+    const hasBasePlan = cart.some((item) => item.basePlan);
+
+    if (!hasBasePlan) {
+      alert("⚠️ Please select at least one base plan before proceeding to checkout.");
+      return;
+    }
+
+    // navigate to payment page
+    navigate("/dashboard/payment", { state: { total, cart } });
+  };
+
+  // 🕒 Loading UI
+  if (loading) {
+    return (
+      <div className="container mt-5 pt-5 text-center">
+        <h4>Loading cart...</h4>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5 pt-5">
       <h2 className="mb-4 fw-bold text-center">🛒 Your Cart</h2>
 
-      {!cart.basePlan && cart.addons.length === 0 ? (
+      {cart.length === 0 ? (
         <div className="text-center text-muted fs-5">Your cart is empty.</div>
       ) : (
         <div className="table-responsive">
@@ -37,37 +96,24 @@ function Cart() {
               </tr>
             </thead>
             <tbody>
-              {cart.basePlan && (
-                <tr>
-                  <td>{cart.basePlan.customised ? "Customised Plan" : "Base Plan"}</td>
-                  <td>{cart.basePlan.plan_name || cart.basePlan.name}</td>
-                  <td>{cart.basePlan.price}</td>
+              {cart.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.basePlan ? "Base Plan" : "Add-On"}</td>
                   <td>
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => {
-                        removeBasePlan();
-                        setCart(getCart());
-                      }}
-                    >
-                      Remove
-                    </button>
+                    {item.basePlan
+                      ? item.basePlan.plan_name || item.basePlan.name
+                      : item.addOn.name}
                   </td>
-                </tr>
-              )}
-
-              {cart.addons.map((addon) => (
-                <tr key={addon.id}>
-                  <td>Add-On</td>
-                  <td>{addon.name}</td>
-                  <td>{addon.price}</td>
+                  <td>
+                    ₹
+                    {item.basePlan
+                      ? item.basePlan.price
+                      : item.addOn.price}
+                  </td>
                   <td>
                     <button
                       className="btn btn-outline-danger btn-sm"
-                      onClick={() => {
-                        removeAddon(addon.id);
-                        setCart(getCart());
-                      }}
+                      onClick={() => handleRemoveRow(item)}
                     >
                       Remove
                     </button>
@@ -77,22 +123,18 @@ function Cart() {
 
               <tr className="fw-bold">
                 <td colSpan="2">Total</td>
-                <td colSpan="2">₹{total}</td>
+                <td colSpan="2">₹{total.toFixed(2)}</td>
               </tr>
             </tbody>
           </table>
 
           <div className="text-end mt-3">
-            <button
-              className="btn btn-danger me-3"
-              onClick={() => {
-                clearCart();
-                setCart(getCart());
-              }}
-            >
+            <button className="btn btn-danger me-3" onClick={handleClear}>
               Clear Cart
             </button>
-            <button className="btn btn-success">Proceed to Checkout</button>
+            <button className="btn btn-success" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       )}

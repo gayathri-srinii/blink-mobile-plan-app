@@ -31,6 +31,7 @@
 .dropdown-menu-end {
   right: 0 !important;
   left: auto !important;
+  top: 90%;
   transform: translateX(25px); /* slightly pull left to fit fully */
 }
 

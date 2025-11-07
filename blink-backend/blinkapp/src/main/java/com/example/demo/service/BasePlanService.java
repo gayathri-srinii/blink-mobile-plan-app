@@ -18,6 +18,11 @@ public class BasePlanService {
     public BasePlan addPlan(BasePlan plan) {
         return basePlanRepository.save(plan);
     }
+    
+    public BasePlan getPlanById(Long id) {
+        return basePlanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Base plan not found with id: " + id));
+    }
 
     public List<BasePlan> getAllPlans() {
         return basePlanRepository.findAll();

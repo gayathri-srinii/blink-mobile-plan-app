@@ -21,6 +21,11 @@ public class BasePlanController {
     public BasePlan addPlan(@RequestBody BasePlan plan) {
         return basePlanService.addPlan(plan);
     }
+    
+    @GetMapping("/{id}")
+    public BasePlan getPlanById(@PathVariable Long id) {
+        return basePlanService.getPlanById(id);
+    }
 
     @GetMapping("/all")
     public List<BasePlan> getAllPlans() {

@@ -22,6 +22,11 @@ public class AddOnService {
         return addOnRepository.findAll();
     }
 
+    public AddOn getAddOnById(Long id) {
+        return addOnRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Add-On not found with id: " + id));
+    }
+    
     public void deleteAddOn(Long id) {
         addOnRepository.deleteById(id);
     }

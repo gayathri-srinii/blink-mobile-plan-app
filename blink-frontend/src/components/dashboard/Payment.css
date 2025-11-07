@@ -1,0 +1,28 @@
+.payment-options {
+  background: #ffffff;
+}
+.payment-container {
+  padding-top: 0px; /* Adjusts for fixed navbar height */
+  min-height: 83vh;
+  background-color: #f9fbff;
+}
+.option-item {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-item:hover {
+  background-color: #e9f3ff;
+}
+
+.option-item.active {
+  background-color: #0d6efd;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}

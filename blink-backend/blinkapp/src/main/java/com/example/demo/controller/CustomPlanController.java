@@ -25,4 +25,11 @@ public class CustomPlanController {
     public List<CustomPlan> getUserCustomPlans(@PathVariable String userEmail) {
         return customPlanRepository.findByUserEmail(userEmail);
     }
+    
+    @GetMapping("/id/{id}")
+    public ResponseEntity<CustomPlan> getCustomPlanById(@PathVariable Long id) {
+        return customPlanRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

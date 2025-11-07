@@ -33,18 +33,18 @@ function Dashboard() {
               <Carousel fade indicators controls interval={3000}>
                 <Carousel.Item>
                   <img src={dashboard_spm} alt="Seamless Plan Management" />
-                  <Carousel.Caption className="carousel-caption-custom">
+                  {/* <Carousel.Caption className="carousel-caption-custom">
                     <h3>Seamless Plan Management</h3>
                     <p>Easily view, add, and customize your mobile plans.</p>
                     <Link to="view-plan" className="btn btn-light btn-sm mt-2">
                       Explore Plans
                     </Link>
-                  </Carousel.Caption>
+                  </Carousel.Caption> */}
                 </Carousel.Item>
 
                 <Carousel.Item>
                   <img src={dashboard_pr} alt="Personalized Recommendations" />
-                  <Carousel.Caption className="carousel-caption-custom">
+                  {/* <Carousel.Caption className="carousel-caption-custom">
                     <h3>Personalized Recommendations</h3>
                     <p>Get plans that perfectly fit your usage and lifestyle.</p>
                     <Link
@@ -53,18 +53,18 @@ function Dashboard() {
                     >
                       View Recommendations
                     </Link>
-                  </Carousel.Caption>
+                  </Carousel.Caption> */}
                 </Carousel.Item>
 
                 <Carousel.Item>
                   <img src={dashboard_ae} alt="Add-ons & Extras" />
-                  <Carousel.Caption className="carousel-caption-custom">
+                  {/* <Carousel.Caption className="carousel-caption-custom">
                     <h3>Add-ons & Extras</h3>
                     <p>Boost your plan with extra data and OTT packs.</p>
                     <Link to="add-on" className="btn btn-light btn-sm mt-2">
                       Check Add-ons
                     </Link>
-                  </Carousel.Caption>
+                  </Carousel.Caption> */}
                 </Carousel.Item>
               </Carousel>
             </div>

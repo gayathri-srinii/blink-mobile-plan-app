@@ -12,7 +12,8 @@ import CustomisePlan from "./components/dashboard/CustomisePlan";
 import Recommendations from "./components/dashboard/Recommendations";
 import Cart from "./components/dashboard/Cart"; 
 import UserProfile from "./components/dashboard/UserProfile"; 
-
+import Payment from "./components/dashboard/Payment";
+import PaymentSuccess from "./components/dashboard/PaymentSuccess";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="recommendations" element={<Recommendations />} />
           <Route path="cart" element={<Cart />} />
           <Route path="profile" element={<UserProfile />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
         </Route>
       </Routes>
     </>

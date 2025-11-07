@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import "./CustomisePlan.css";
-import { addCustomisedPlan } from "./CartUtils";
+import { useNavigate } from "react-router-dom";
 
 function CustomisePlan() {
   const [addons, setAddons] = useState([
-  { id: 1, name: "YouTube Premium", price: 99 },
-  { id: 2, name: "Netflix Subscription", price: 199 },
-  { id: 3, name: "Extra 5GB Data Pack", price: 49 },
-  { id: 4, name: "Amazon Prime Video", price: 149 },
-  { id: 5, name: "Disney+ Hotstar", price: 129 },
-  { id: 6, name: "Spotify Premium", price: 79 },
-]);
+    { id: 1, name: "YouTube Premium", price: 99 },
+    { id: 2, name: "Netflix Subscription", price: 199 },
+    { id: 3, name: "Extra 5GB Data Pack", price: 49 },
+    { id: 4, name: "Amazon Prime Video", price: 149 },
+    { id: 5, name: "Disney+ Hotstar", price: 129 },
+    { id: 6, name: "Spotify Premium", price: 79 },
+  ]);
 
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [customData, setCustomData] = useState(10);
@@ -18,6 +19,7 @@ function CustomisePlan() {
   const [customValidity, setCustomValidity] = useState(28);
   const [customCalls, setCustomCalls] = useState(100);
   const [price, setPrice] = useState(99);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const addonPrice = selectedAddons.reduce((sum, id) => {
@@ -26,10 +28,7 @@ function CustomisePlan() {
     }, 0);
 
     const basePrice =
-      customData * 2 +
-      customSMS * 0.1 +
-      customCalls * 0.5 +
-      customValidity * 1;
+      customData * 2 + customSMS * 0.1 + customCalls * 0.5 + customValidity * 1;
 
     setPrice(basePrice + addonPrice);
   }, [customData, customSMS, customValidity, customCalls, selectedAddons, addons]);
@@ -38,6 +37,37 @@ function CustomisePlan() {
     setSelectedAddons((prev) =>
       prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
     );
+  };
+
+  const handleRecharge = async () => {
+    const userEmail = localStorage.getItem("userEmail");
+
+    const payload = {
+      dataLimit: customData,
+      smsCount: customSMS,
+      validityDays: customValidity,
+      price,
+      youtubePremium: selectedAddons.includes(1),
+      netflixSubscription: selectedAddons.includes(2),
+      extraDataBooster: selectedAddons.includes(3),
+      primeMembership: selectedAddons.includes(4),
+      hotstarSubscription: selectedAddons.includes(5),
+      musicPack: selectedAddons.includes(6),
+      userEmail,
+      status: "ACTIVE",
+    };
+
+    try {
+      const res = await axios.post("http://localhost:8080/api/custom-plan/create", payload);
+      console.log("Custom plan saved:", res.data);
+
+      navigate("/dashboard/payment", {
+        state: { total: price, cart: [{ basePlan: res.data }] },
+      });
+    } catch (err) {
+      console.error("Error saving custom plan:", err);
+      alert("Failed to create custom plan.");
+    }
   };
 
   return (
@@ -129,21 +159,8 @@ function CustomisePlan() {
           </h5>
 
           <div className="text-center">
-            <button
-              className="btn elegant-btn w-100 mt-3"
-              onClick={() => {
-                addCustomisedPlan({
-                  data: customData,
-                  sms: customSMS,
-                  validity: customValidity,
-                  calls: customCalls,
-                  selectedAddons,
-                  price,
-                });
-                window.location.reload();
-              }}
-            >
-              Recharge now
+            <button className="btn elegant-btn w-100 mt-3" onClick={handleRecharge}>
+              Recharge Now
             </button>
           </div>
         </div>

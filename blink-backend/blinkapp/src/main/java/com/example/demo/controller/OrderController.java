@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Orders;
 import com.example.demo.repository.OrderRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,4 +20,10 @@ public class OrderController {
     public Orders createOrder(@RequestBody Orders order) {
         return orderRepository.save(order);
     }
+    
+    @GetMapping("/{userEmail}")
+    public List<Orders> getUserOrders(@PathVariable String userEmail) {
+        return orderRepository.findByUserEmail(userEmail);
+    }
+    
 }

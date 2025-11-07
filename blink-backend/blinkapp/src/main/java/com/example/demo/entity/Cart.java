@@ -6,25 +6,26 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-
 @Entity
+@Table(name = "cart")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "cart")
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
-    @Column(name = "base_plan_id")
-    private Long basePlan;
+    @ManyToOne
+    @JoinColumn(name = "base_plan_id", nullable = true)
+    private BasePlan basePlan;
 
-    @Column(name = "add_on_id")
-    private Long addOn;
+    @ManyToOne
+    @JoinColumn(name = "add_on_id", nullable = true)
+    private AddOn addOn;
 }

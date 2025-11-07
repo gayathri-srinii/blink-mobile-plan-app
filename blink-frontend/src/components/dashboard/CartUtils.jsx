@@ -1,54 +1,95 @@
-// CartUtils.jsx
+import axios from "axios";
 
-// Fetch cart from localStorage
-export const getCart = () => {
-  const cart = localStorage.getItem("cart");
-  return cart ? JSON.parse(cart) : { basePlan: null, addons: [] };
-};
+const API_BASE = "http://localhost:8080/api/cart";
+const getEmail = () => localStorage.getItem("userEmail"); // ensure userEmail is stored on login
 
-// Save cart to localStorage
-export const saveCart = (cart) => {
-  localStorage.setItem("cart", JSON.stringify(cart));
-};
-
-// Add base plan (replaces existing one)
-export const addBasePlan = (plan) => {
-  const cart = getCart();
-  cart.basePlan = plan;
-  saveCart(cart);
-};
-
-// Add customized plan (same as base plan)
-export const addCustomisedPlan = (customPlan) => {
-  const cart = getCart();
-  cart.basePlan = { ...customPlan, customised: true };
-  saveCart(cart);
-};
-
-// Add an add-on (multiple allowed)
-export const addAddon = (addon) => {
-  const cart = getCart();
-  if (!cart.addons.find((a) => a.id === addon.id)) {
-    cart.addons.push(addon);
+export const addCustomisedPlan = async (userEmail, planData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/add/customplan`, planData, {
+      params: { userEmail },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding customised plan:", error);
+    throw error;
   }
-  saveCart(cart);
 };
 
-// Remove base plan
-export const removeBasePlan = () => {
-  const cart = getCart();
-  cart.basePlan = null;
-  saveCart(cart);
+// Fetch cart array from backend for current user
+export const fetchCartFromServer = async () => {
+  const email = getEmail();
+  if (!email) return [];
+  try {
+    const res = await axios.get(`${API_BASE}/${encodeURIComponent(email)}`);
+    // Expect res.data to be an array of cart items
+    return res.data || [];
+  } catch (err) {
+    console.error("fetchCartFromServer error:", err);
+    return [];
+  }
 };
 
-// Remove addon
-export const removeAddon = (id) => {
-  const cart = getCart();
-  cart.addons = cart.addons.filter((a) => a.id !== id);
-  saveCart(cart);
+// ➕ Add base plan
+export const addBasePlan = async (basePlanId) => {
+  const email = getEmail();
+  await axios.post(`${API_BASE}/add/baseplan?userEmail=${email}`, { id: basePlanId });
 };
 
-// Clear entire cart
-export const clearCart = () => {
-  saveCart({ basePlan: null, addons: [] });
+// ❌ Remove base plan
+export const removeBasePlan = async (basePlanId) => {
+  const email = getEmail();
+  await axios.delete(`${API_BASE}/remove/baseplan`, {
+    params: { userEmail: email, basePlanId },
+  });
+};
+
+// ✅ Add add-on
+export const addAddon = async (addOnId) => {
+  const email = getEmail();
+  try {
+    await axios.post(`${API_BASE}/add/addon?userEmail=${email}`, { id: addOnId });
+  } catch (error) {
+    console.error("Error adding add-on:", error);
+  }
+};
+
+// Clear entire cart for user
+export const clearCart = async () => {
+  const email = getEmail();
+  if (!email) throw new Error("No userEmail in localStorage");
+  try {
+    await axios.delete(`${API_BASE}/clear/${encodeURIComponent(email)}`);
+    return [];
+  } catch (err) {
+    console.error("clearCart error:", err);
+    throw err;
+  }
+};
+// ✅ Get cart for user (returns Promise)
+export const getCart = async () => {
+  const email = getEmail();
+  if (!email) {
+    console.warn("No user email found in localStorage!");
+    return [];
+  }
+  try {
+    const response = await axios.get(`${API_BASE}/${email}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    return [];
+  }
+};
+
+
+// ✅ Remove add-on
+export const removeAddon = async (addOnId) => {
+  const email = getEmail();
+  try {
+    await axios.delete(`${API_BASE}/remove/addon`, {
+      params: { userEmail: email, addonId: addOnId },
+    });
+  } catch (error) {
+    console.error("Error removing add-on:", error);
+  }
 };

@@ -1,19 +1,43 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ViewAddOn.css";
-import { getCart, addAddon, removeAddon } from "./CartUtils";
-
+import { addAddon, removeAddon, getCart } from "./CartUtils";
 
 function ViewAddOn() {
   const [addons, setAddons] = useState([]);
-  const cart = getCart();
+  const [cart, setCart] = useState([]);
 
+  // Fetch addons and cart from backend
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/addons/all")
       .then((res) => setAddons(res.data))
       .catch((err) => console.error(err));
+
+    getCart()
+      .then((data) => setCart(data))
+      .catch((err) => console.error(err));
   }, []);
+
+  // Helper to check if addon already in user's cart
+  const isInCart = (addonId) => {
+    return cart.some((item) => item.addOn && item.addOn.id === addonId);
+  };
+
+  // Handle Add or Remove
+  const handleToggleAddon = async (addonId) => {
+    try {
+      if (isInCart(addonId)) {
+        await removeAddon(addonId); // DELETE from DB
+      } else {
+        await addAddon(addonId); // POST to DB
+      }
+      const updated = await getCart(); // Refresh cart from backend
+      setCart(updated);
+    } catch (err) {
+      console.error("Error updating addon:", err);
+    }
+  };
 
   return (
     <div className="viewaddon-wrapper">
@@ -40,23 +64,13 @@ function ViewAddOn() {
                 </div>
                 <div className="card-footer bg-white border-0 p-0">
                   <button
-  className={`btn elegant-btn w-100 ${
-    cart.addons.find((a) => a.id === addon.id) ? "btn-secondary" : ""
-  }`}
-  onClick={() => {
-    if (cart.addons.find((a) => a.id === addon.id)) {
-      removeAddon(addon.id);
-    } else {
-      addAddon(addon);
-    }
-    window.location.reload();
-  }}
->
-  {cart.addons.find((a) => a.id === addon.id)
-    ? "Remove from Cart"
-    : "Add to Cart"}
-</button>
-
+                    className={`btn elegant-btn w-100 ${
+                      isInCart(addon.id) ? "btn-secondary" : ""
+                    }`}
+                    onClick={() => handleToggleAddon(addon.id)}
+                  >
+                    {isInCart(addon.id) ? "Remove from Cart" : "Add to Cart"}
+                  </button>
                 </div>
               </div>
             </div>

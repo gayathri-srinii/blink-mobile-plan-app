@@ -21,6 +21,11 @@ public class AddOnController {
     public AddOn addAddOn(@RequestBody AddOn addOn) {
         return addOnService.addAddOn(addOn);
     }
+    
+    @GetMapping("/{id}")
+    public AddOn getAddOnById(@PathVariable Long id) {
+        return addOnService.getAddOnById(id);
+    }
 
     @GetMapping("/all")
     public List<AddOn> getAllAddOns() {
